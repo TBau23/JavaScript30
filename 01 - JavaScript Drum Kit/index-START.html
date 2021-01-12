@@ -58,7 +58,30 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  // eventListeners can be added to specific divs as well - with keys on the full screen window makes sense
 
+
+  function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"`)
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"`) // selecting the actual divs that match up to pressed keys
+    if(!audio) return; // if no matching audio is found - stop the function
+    audio.currentTime = 0; // this line solves the problem described on line below
+    audio.play() // if you call audio.play on an element that is already playing it wont work - if you hit keys successively there is notable pause
+    key.classList.add('playing')
+  }
+  
+  function removeTransition(e) {
+    if(e.propertyName !== 'transform') return; // skip if it's not a transform. There are many transition events that occur otherwise
+     // transform is found in css - makes sense to remove longest property 
+    this.classList.remove('playing') // this references div with key being played
+  }
+  
+  const keys = document.querySelectorAll('.key'); // returns array of all items with key class
+  // now need to add event listeners to all elements in array
+  keys.forEach(key => {
+    key.addEventListener('transitionend', removeTransition); // listening for event called remove transition
+  });
+  window.addEventListener('keydown', playSound)
 </script>
 
 
