@@ -130,9 +130,10 @@
     function toggleOpen() {
       this.classList.toggle('open');
     }
-    
+
     function toggleActive(e) {
-      if(e.propertyName.includes('flex')) {
+      if(e.propertyName.includes('flex')) { /* there are multiple transition end events here - you can identify the important one
+      by console.loggign*/
         this.classList.toggle('open-active')
       }
     }
